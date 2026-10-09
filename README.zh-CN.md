@@ -106,9 +106,11 @@ LaunchTaskKit 使用 MIT License。
 
 采用标准 SwiftPM 包结构：`Package.swift`、`Sources/`、`Tests/`。仅支持 SwiftPM，宏从源码编译，历史版本保持不变。
 
+自动化脚本使用 Python 3.11+ 标准库、Xcode 和 xcbeautify，无需安装 Ruby 或 Python 第三方包。
+
 ```sh
-bash Scripts/test-macros.sh
-bash Scripts/test-ios.sh
+python3 Scripts/test.py macros
+python3 Scripts/test.py ios
 ```
 
 GitHub Actions 在 PR、main 更新和版本 tag 时执行宿主宏测试及 iOS 包测试。运行时测试覆盖真实宏展开和自动注册/数据库断言。xcodebuild 使用 pipefail 和 xcbeautify；失败时也上传日志与 xcresults。数字版本 tag 的全部 CI 任务通过后才创建 GitHub Release。移除本地发布编排、CocoaPods 和预编译宏分发。
