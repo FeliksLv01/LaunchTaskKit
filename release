@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-cd "$(dirname "$0")"
-exec bundle exec ruby Scripts/distribution.rb release "$@"
