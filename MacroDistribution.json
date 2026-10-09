@@ -1,0 +1,20 @@
+{
+  "library": "LaunchTaskKit",
+  "repository": "FeliksLv01/LaunchTaskKit",
+  "version": "0.0.2",
+  "ios_deployment_target": "15.0",
+  "consumer_swift_flags": [
+    "-enable-experimental-feature",
+    "SymbolLinkageMarkers"
+  ],
+  "build": {
+    "module": "LaunchTaskKitMacros",
+    "test_target": "LaunchTaskKitMacrosTests",
+    "sources": "Sources/LaunchTaskKitMacros",
+    "architecture": "arm64",
+    "configuration": "release",
+    "swift_flags": [
+      "-Osize"
+    ]
+  }
+}
