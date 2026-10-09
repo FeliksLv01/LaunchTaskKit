@@ -63,6 +63,41 @@ final class LaunchTaskEntryMacroTests: XCTestCase {
         )
     }
 
+    func testEntryPreservesPublicAndPackageAccessForAsyncTasks() {
+        for access in ["public", "package"] {
+            assertMacroExpansion(
+                """
+                @LaunchTaskEntry(phase: .sub, priority: 7)
+                \(access) final class RefreshTask: AsyncLaunchTask {
+                }
+                """,
+                expandedSource: """
+                \(access) final class RefreshTask: AsyncLaunchTask {
+
+                    \(access) override class var identifier: String {
+                        String(reflecting: self)
+                    }
+
+                    \(access) override class var phase: LaunchPhase {
+                        .sub
+                    }
+
+                    \(access) override class var priority: Int {
+                        7
+                    }
+
+                    @section("__DATA_CONST,__launch_task")
+                    @used
+                    private static let _launchTaskEntry: @convention(c) () -> UnsafeRawPointer = {
+                        unsafeBitCast(RefreshTask.self, to: UnsafeRawPointer.self)
+                    }
+                }
+                """,
+                macros: testMacros
+            )
+        }
+    }
+
     func testEntryRejectsUnsupportedBaseClass() {
         assertMacroExpansion(
             """

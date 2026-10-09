@@ -27,20 +27,23 @@ public struct LaunchTaskEntryMacro: MemberMacro {
 
         let arguments = try arguments(from: node)
         let className = classDeclaration.name.text
+        let access = classDeclaration.modifiers.first {
+            $0.name.tokenKind == .keyword(.public) || $0.name.tokenKind == .keyword(.package)
+        }.map { "\($0.name.text) " } ?? ""
 
         return [
             """
-            override class var identifier: String {
+            \(raw: access)override class var identifier: String {
                 String(reflecting: self)
             }
             """,
             """
-            override class var phase: LaunchPhase {
+            \(raw: access)override class var phase: LaunchPhase {
                 \(raw: arguments.phase)
             }
             """,
             """
-            override class var priority: Int {
+            \(raw: access)override class var priority: Int {
                 \(raw: arguments.priority)
             }
             """,
